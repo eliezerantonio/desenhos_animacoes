@@ -8,7 +8,10 @@ class MusicaPlayerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-        children: [CustomAppBar(), ImageDiskAndDuration()],
+        children: [
+          CustomAppBar(),
+          ImageDiskAndDuration(),
+        ],
       ),
     );
   }
@@ -22,10 +25,13 @@ class ImageDiskAndDuration extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 30),
+      margin: EdgeInsets.only(top: 70),
       child: Row(
         children: [
-          DiskImage()
-          //TODO:BArRA PROGRESSO
+          DiskImage(),
+          SizedBox(width: 30),
+          ProgressBar(),
         ],
       ),
     );
@@ -77,6 +83,50 @@ class DiskImage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class ProgressBar extends StatelessWidget {
+  const ProgressBar({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          Text("00:00", style: buildTextStyle()),
+          const SizedBox(height: 10),
+          Stack(
+            children: [
+              Container(
+                width: 3,
+                height: 230,
+                color: Colors.grey[400].withOpacity(0.3),
+              ),
+              Positioned(
+                bottom: 0,
+                child: Container(
+                  width: 3,
+                  height: 150,
+                  color: Colors.grey[400].withOpacity(0.8),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Text(
+            "00:00",
+            style: buildTextStyle(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  TextStyle buildTextStyle() {
+    return TextStyle(
+      color: Colors.grey.withOpacity(0.8),
     );
   }
 }
