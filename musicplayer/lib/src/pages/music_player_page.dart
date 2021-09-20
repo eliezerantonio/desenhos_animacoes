@@ -21,6 +21,32 @@ class MusicaPlayerPage extends StatelessWidget {
   }
 }
 
+class Background extends StatelessWidget {
+  const Background({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return Container(
+      width: double.infinity,
+      height: size.height * 0.3,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(60)),
+        gradient: LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.center,
+          colors: [
+            Colors.grey[50],
+            Colors.grey[50],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class ImageDiskAndDuration extends StatelessWidget {
   const ImageDiskAndDuration({
     Key key,
@@ -197,25 +223,21 @@ class Lyrics extends StatelessWidget {
   }
 }
 
-class ControllButtons extends StatelessWidget {
+class ControllButtons extends StatefulWidget {
   const ControllButtons({Key key}) : super(key: key);
 
+  @override
+  _ControllButtonsState createState() => _ControllButtonsState();
+}
+
+class _ControllButtonsState extends State<ControllButtons> {
+  bool isPlaying = false;
   @override
   Widget build(BuildContext context) {
     return Stack(
       alignment: Alignment.center,
       children: [
-        Container(
-          height: 50,
-          margin: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.22),
-          width: double.infinity,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              border: Border.all(
-                color: Colors.grey[400],
-              )),
-        ),
+        backgroundCircle(context),
         Container(
           margin: EdgeInsets.symmetric(
               horizontal: MediaQuery.of(context).size.width * 0.3),
@@ -223,23 +245,40 @@ class ControllButtons extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Icon(FontAwesomeIcons.angleDoubleLeft, size: 30),
-              Container(
-                height: 120,
-                width: 90,
-                child: FloatingActionButton(
-                  backgroundColor: Color(0xffFE0240),
-                  onPressed: () {},
-                  child: Center(
-                    child: Icon(FontAwesomeIcons.play,
-                        color: Colors.white, size: 32),
-                  ),
-                ),
-              ),
+              buttonPlay(),
               Icon(FontAwesomeIcons.angleDoubleRight, size: 30),
             ],
           ),
         ),
       ],
+    );
+  }
+
+  Container backgroundCircle(BuildContext context) {
+    return Container(
+      height: 50,
+      margin: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * 0.22),
+      width: double.infinity,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          border: Border.all(
+            color: Colors.grey[400],
+          )),
+    );
+  }
+
+  Container buttonPlay() {
+    return Container(
+      height: 120,
+      width: 90,
+      child: FloatingActionButton(
+        backgroundColor: Color(0xffFE0240),
+        onPressed: () {},
+        child: Center(
+          child: Icon(FontAwesomeIcons.play, color: Colors.white, size: 32),
+        ),
+      ),
     );
   }
 }
