@@ -2,7 +2,12 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:musicplayer/helpers/helpers.dart';
+import 'package:musicplayer/src/models/audio_player_model.dart';
 import 'package:musicplayer/src/widgets/custom_app_bar.dart';
+import 'package:provider/provider.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
 
 class MusicaPlayerPage extends StatelessWidget {
   const MusicaPlayerPage({Key key}) : super(key: key);
@@ -74,6 +79,7 @@ class DiskImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final audioPlayerModel = Provider.of<AudioPlayerModel>(context);
     return Container(
       padding: EdgeInsets.all(20),
       width: 250,
@@ -86,6 +92,9 @@ class DiskImage extends StatelessWidget {
               SpinPerfect(
                 duration: Duration(seconds: 10),
                 infinite: true,
+                manualTrigger: true,
+                controller: (animationController) =>
+                    audioPlayerModel.controller = animationController,
                 child: Image(
                   image: AssetImage("assets/album.jpg"),
                 ),
@@ -239,6 +248,8 @@ class _ControllButtonsState extends State<ControllButtons>
     with SingleTickerProviderStateMixin {
   bool isPlaying = false;
   AnimationController playAnimation;
+  final assetAudioPlayer = new AssetsAudioPlayer();
+
   @override
   void initState() {
     super.initState();
@@ -289,12 +300,16 @@ class _ControllButtonsState extends State<ControllButtons>
       child: FloatingActionButton(
         backgroundColor: Color(0xffFE0240),
         onPressed: () {
+          final audioPlayerModel =
+              Provider.of<AudioPlayerModel>(context, listen: false);
           if (this.isPlaying) {
-            playAnimation.forward();
-            this.isPlaying = true;
+            playAnimation.reverse();
+            this.isPlaying = false;
+            audioPlayerModel.controller.stop();
           } else {
             playAnimation.forward();
             this.isPlaying = true;
+            audioPlayerModel.controller.repeat();
           }
         },
         child: Center(
