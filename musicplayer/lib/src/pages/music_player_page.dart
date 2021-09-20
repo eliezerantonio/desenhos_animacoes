@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:musicplayer/helpers/helpers.dart';
 import 'package:musicplayer/src/models/audio_player_model.dart';
+
 import 'package:musicplayer/src/widgets/custom_app_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:audioplayers/audioplayers.dart';
-import 'package:just_audio/just_audio.dart';
+
 import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class MusicaPlayerPage extends StatelessWidget {
   const MusicaPlayerPage({Key key}) : super(key: key);
@@ -132,14 +133,15 @@ class DiskImage extends StatelessWidget {
 }
 
 class ProgressBar extends StatelessWidget {
-  const ProgressBar({Key key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
+    final audioPlayerModel = Provider.of<AudioPlayerModel>(context);
+    final percent = audioPlayerModel.percent;
     return Container(
       child: Column(
         children: [
-          Text("00:00", style: buildTextStyle()),
+          Text("${audioPlayerModel.songTotalDuration}",
+              style: buildTextStyle()),
           const SizedBox(height: 10),
           Stack(
             children: [
@@ -152,17 +154,14 @@ class ProgressBar extends StatelessWidget {
                 bottom: 0,
                 child: Container(
                   width: 3,
-                  height: 150,
+                  height: 230 * percent,
                   color: Color(0xffFE0240),
                 ),
               ),
             ],
           ),
           const SizedBox(height: 10),
-          Text(
-            "00:00",
-            style: buildTextStyle(),
-          ),
+          Text(" ${audioPlayerModel.currentSecond} ", style: buildTextStyle()),
         ],
       ),
     );
@@ -185,7 +184,7 @@ class PlayTitle extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            "Save Your Tears",
+            "Save Your Tear",
             style: TextStyle(
               fontSize: 30,
               color: Colors.grey.withOpacity(0.9),
@@ -247,6 +246,8 @@ class ControllButtons extends StatefulWidget {
 class _ControllButtonsState extends State<ControllButtons>
     with SingleTickerProviderStateMixin {
   bool isPlaying = false;
+  bool firstTime = true;
+
   AnimationController playAnimation;
   final assetAudioPlayer = new AssetsAudioPlayer();
 
@@ -255,6 +256,29 @@ class _ControllButtonsState extends State<ControllButtons>
     super.initState();
     playAnimation =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+  }
+
+  @override
+  void dispose() {
+    this.playAnimation.dispose();
+    super.dispose();
+  }
+
+  void open() {
+    final audioPlayerModel =
+        Provider.of<AudioPlayerModel>(context, listen: false);
+
+    assetAudioPlayer.open(
+      Audio.file("assets/The-Weeknd-11-Save-Your-Tears.mp3"),
+    );
+
+    assetAudioPlayer.currentPosition.listen((duration) {
+      audioPlayerModel.current = duration;
+    });
+
+    assetAudioPlayer.currentPosition.listen((event) {
+      audioPlayerModel.songDuration = event;
+    });
   }
 
   @override
@@ -310,6 +334,12 @@ class _ControllButtonsState extends State<ControllButtons>
             playAnimation.forward();
             this.isPlaying = true;
             audioPlayerModel.controller.repeat();
+          }
+          if (firstTime) {
+            this.open();
+            firstTime = false;
+          } else {
+            assetAudioPlayer.playOrPause();
           }
         },
         child: Center(

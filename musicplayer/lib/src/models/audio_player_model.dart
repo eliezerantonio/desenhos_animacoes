@@ -22,7 +22,7 @@ class AudioPlayerModel with ChangeNotifier {
   bool get playing => this._playing;
   set playing(bool valor) {
     this._playing = valor;
-    notifyListeners();
+ 
   }
 
   Duration get songDuration => this._songDuration;
