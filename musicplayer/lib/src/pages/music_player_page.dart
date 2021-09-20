@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:musicplayer/helpers/helpers.dart';
@@ -82,8 +83,12 @@ class DiskImage extends StatelessWidget {
           child: Stack(
             alignment: Alignment.center,
             children: [
-              Image(
-                image: AssetImage("assets/album.jpg"),
+              SpinPerfect(
+                duration: Duration(seconds: 10),
+                infinite: true,
+                child: Image(
+                  image: AssetImage("assets/album.jpg"),
+                ),
               ),
               Container(
                 width: 25,
@@ -230,8 +235,17 @@ class ControllButtons extends StatefulWidget {
   _ControllButtonsState createState() => _ControllButtonsState();
 }
 
-class _ControllButtonsState extends State<ControllButtons> {
+class _ControllButtonsState extends State<ControllButtons>
+    with SingleTickerProviderStateMixin {
   bool isPlaying = false;
+  AnimationController playAnimation;
+  @override
+  void initState() {
+    super.initState();
+    playAnimation =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -274,10 +288,20 @@ class _ControllButtonsState extends State<ControllButtons> {
       width: 90,
       child: FloatingActionButton(
         backgroundColor: Color(0xffFE0240),
-        onPressed: () {},
+        onPressed: () {
+          if (this.isPlaying) {
+            playAnimation.forward();
+            this.isPlaying = true;
+          } else {
+            playAnimation.forward();
+            this.isPlaying = true;
+          }
+        },
         child: Center(
-          child: Icon(FontAwesomeIcons.play, color: Colors.white, size: 32),
-        ),
+            child: AnimatedIcon(
+                size: 33,
+                icon: AnimatedIcons.play_pause,
+                progress: playAnimation)),
       ),
     );
   }
