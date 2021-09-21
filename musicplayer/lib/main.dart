@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:musicplayer/helpers/theme.dart';
 import 'package:musicplayer/src/models/audio_player_model.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
 import 'src/pages/music_player_page.dart';
 

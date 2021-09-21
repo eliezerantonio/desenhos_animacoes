@@ -8,7 +8,6 @@ import 'package:musicplayer/src/widgets/custom_app_bar.dart';
 import 'package:provider/provider.dart';
 
 import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:audioplayers/audioplayers.dart';
 
 class MusicaPlayerPage extends StatelessWidget {
   const MusicaPlayerPage({Key key}) : super(key: key);
@@ -247,8 +246,9 @@ class _ControllButtonsState extends State<ControllButtons>
     with SingleTickerProviderStateMixin {
   bool isPlaying = false;
   bool firstTime = true;
-
+  double speed = 0.4;
   AnimationController playAnimation;
+
   final assetAudioPlayer = new AssetsAudioPlayer();
 
   @override
@@ -268,16 +268,14 @@ class _ControllButtonsState extends State<ControllButtons>
     final audioPlayerModel =
         Provider.of<AudioPlayerModel>(context, listen: false);
 
-    assetAudioPlayer.open(
-      Audio.file("assets/The-Weeknd-11-Save-Your-Tears.mp3"),
-    );
+    assetAudioPlayer.open(Audio('assets/The-Weeknd-11-Save-Your-Tears.mp3'));
 
     assetAudioPlayer.currentPosition.listen((duration) {
       audioPlayerModel.current = duration;
     });
 
-    assetAudioPlayer.currentPosition.listen((event) {
-      audioPlayerModel.songDuration = event;
+    assetAudioPlayer.current.listen((playingAudio) {
+      audioPlayerModel.songDuration = playingAudio.audio.duration;
     });
   }
 
@@ -288,17 +286,24 @@ class _ControllButtonsState extends State<ControllButtons>
       children: [
         backgroundCircle(context),
         Container(
-          margin: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.3),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Icon(FontAwesomeIcons.angleDoubleLeft, size: 30),
-              buttonPlay(),
-              Icon(FontAwesomeIcons.angleDoubleRight, size: 30),
-            ],
-          ),
-        ),
+            margin: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width * 0.3),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: (){
+                   assetAudioPlayer.setPlaySpeed(speed--); 
+                  },
+                    child: Icon(FontAwesomeIcons.angleDoubleLeft, size: 30)),
+                buttonPlay(),
+                GestureDetector(
+                    onTap: () {
+                      assetAudioPlayer.setPlaySpeed(speed++);
+                    },
+                    child: Icon(FontAwesomeIcons.angleDoubleRight, size: 30)),
+              ],
+            )),
       ],
     );
   }
@@ -326,6 +331,7 @@ class _ControllButtonsState extends State<ControllButtons>
         onPressed: () {
           final audioPlayerModel =
               Provider.of<AudioPlayerModel>(context, listen: false);
+
           if (this.isPlaying) {
             playAnimation.reverse();
             this.isPlaying = false;
@@ -335,6 +341,7 @@ class _ControllButtonsState extends State<ControllButtons>
             this.isPlaying = true;
             audioPlayerModel.controller.repeat();
           }
+
           if (firstTime) {
             this.open();
             firstTime = false;
