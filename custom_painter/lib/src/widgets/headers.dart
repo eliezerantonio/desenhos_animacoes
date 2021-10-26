@@ -7,20 +7,18 @@ class HeaderCuandrado extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 300,
-      color: Color(0xff615AAB),
     );
   }
 }
 
-class HeaderBordersRedondeados extends StatelessWidget {
+class HeaderBorderRodondeados extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height: 280,
       decoration: BoxDecoration(
-        color: Color(0xff615AAB),
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(70),
+          bottomLeft: Radius.circular(100),
           bottomRight: Radius.circular(50),
         ),
       ),
@@ -32,34 +30,31 @@ class HeaderDiagonal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: double.infinity,
-      width: double.infinity,
-      child: CustomPaint(
-        painter: _HeaderDiagonalPainter(),
-      ),
-    );
+        height: double.infinity,
+        width: double.infinity,
+        child: CustomPaint(
+          painter: _HeaderTriangulo(),
+        ));
   }
 }
 
 class _HeaderDiagonalPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint();
-    //properties
-    paint.color = Color(0xff615AAB);
-    paint.style = PaintingStyle.fill; //fill
-    paint.strokeWidth = 20;
+    final lapiz = Paint();
+    //propriedades
+    lapiz.color = Color(0xff615AAB);
+    lapiz.style = PaintingStyle.fill;
+    lapiz.strokeWidth = 2;
 
-//partes onde quero mover o paint
-    final path = Path();
+    final path = Path(); //parte para mover o lapiz
 
-    path.moveTo(0, size.height * 0.35);
+    path.moveTo(0, size.height * 0.37);
     path.lineTo(size.width, size.height * 0.30);
     path.lineTo(size.width, 0);
     path.lineTo(0, 0);
-    // path.lineTo(0, size.height * 0.5);
 
-    canvas.drawPath(path, paint);
+    canvas.drawPath(path, lapiz);
   }
 
   @override
@@ -68,76 +63,21 @@ class _HeaderDiagonalPainter extends CustomPainter {
   }
 }
 
-class HeaderTriagular extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: double.infinity,
-      width: double.infinity,
-      child: CustomPaint(
-        painter: _HeaderTriagularPainter(),
-      ),
-    );
-  }
-}
-
-class _HeaderTriagularPainter extends CustomPainter {
+class _HeaderTriangulo extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint();
-    //properties
-    paint.color = Color(0xff615AAB);
-    paint.style = PaintingStyle.fill; //fill.stroke
-    paint.strokeWidth = 20;
+    final lapiz = Paint();
+    //propriedades
+    lapiz.color = Color(0xff615AAB);
+    lapiz.style = PaintingStyle.fill;
+    lapiz.strokeWidth = 40;
 
-//partes onde quero mover o paint
-    final path = Path();
-
+    final path = Path(); //parte para mover o lapiz
+    path.moveTo(0, size.height);
     path.lineTo(size.width, size.height);
-    path.lineTo(size.width, 0);
-    // path.lineTo(0, 0);
-    // path.lineTo(0, size.height * 0.5);
+    path.lineTo(0, 0);
 
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
-  }
-}
-
-class HeaderPico extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: double.infinity,
-      width: double.infinity,
-      child: CustomPaint(
-        painter: _HeaderPicoPainter(),
-      ),
-    );
-  }
-}
-
-class _HeaderPicoPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint();
-    //properties
-    paint.color = Color(0xff615AAB);
-    paint.style = PaintingStyle.fill; //fill.stroke
-    paint.strokeWidth = 20;
-
-//partes onde quero mover o paint
-    final path = Path();
-    path.moveTo(0, size.height * 0.35);
-    path.lineTo(size.width, size.height);
-    path.lineTo(size.width, 0);
-    // path.lineTo(0, 0);
-    // path.lineTo(0, size.height * 0.5);
-
-    canvas.drawPath(path, paint);
+    canvas.drawPath(path, lapiz);
   }
 
   @override
