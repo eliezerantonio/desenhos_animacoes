@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'src/pages/circular_pogress_page.dart';
+import 'src/pages/slide_show_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Desenho App',
-      home: CircularProgressPage(),
+      home: SlideShowPage(),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -7,7 +8,32 @@ class CircularProgressPage extends StatefulWidget {
   State<CircularProgressPage> createState() => _CircularProgressPageState();
 }
 
-class _CircularProgressPageState extends State<CircularProgressPage> {
+class _CircularProgressPageState extends State<CircularProgressPage>
+    with SingleTickerProviderStateMixin {
+  double percent = 0.0;
+  double newPercent = 0.0;
+  AnimationController controller;
+
+  @override
+  void initState() {
+    controller = new AnimationController(
+        vsync: this, duration: Duration(milliseconds: 8000));
+
+    controller.addListener(() {
+      percent = lerpDouble(percent, newPercent, controller.value);
+
+      setState(() {});
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,17 +43,35 @@ class _CircularProgressPageState extends State<CircularProgressPage> {
             width: 300,
             height: 300,
             child: CustomPaint(
-              painter: _MyRadialProgress(),
+              painter: _MyRadialProgress(percent),
             )),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.pink,
+        onPressed: () {
+          percent = newPercent;
+          percent += 10;
+
+          if (newPercent > 100) {
+            newPercent = 0;
+            percent = 0;
+          }
+          controller.forward(from: 0.0);
+          setState(() {});
+        },
+        child: Icon(
+          Icons.refresh,
+        ),
       ),
     );
   }
 }
 
 class _MyRadialProgress extends CustomPainter {
+  final double percent;
+  _MyRadialProgress(this.percent);
   @override
   void paint(Canvas canvas, Size size) {
-    final percent = 80;
     //ciruclo completo
     final paint = new Paint()
       ..strokeWidth = 4
