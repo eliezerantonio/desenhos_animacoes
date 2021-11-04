@@ -47,12 +47,16 @@ class _Dot extends StatelessWidget {
   final int index;
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final pageViewIndex = context.watch<SliderModel>().currentPage;
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 200),
       width: 14,
       margin: EdgeInsets.symmetric(horizontal: 5),
       height: 14,
       decoration: BoxDecoration(
-        color: Colors.grey,
+        color: (pageViewIndex >= index - 0.5 && pageViewIndex < index + 0.5)
+            ? Colors.blue
+            : Colors.grey,
         shape: BoxShape.circle,
       ),
     );
@@ -71,7 +75,11 @@ class _SlidesState extends State<_Slides> {
 
   @override
   void initState() {
-    pageViewController.addListener(() {});
+    pageViewController.addListener(() {
+      //update provider
+
+      context.read<SliderModel>().currentPage = pageViewController.page;
+    });
     super.initState();
   }
 
