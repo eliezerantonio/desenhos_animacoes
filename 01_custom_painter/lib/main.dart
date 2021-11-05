@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'src/pages/slide_show_page.dart';
+import 'src/labs/slide_show_page.dart';
+import 'src/pages/slideshow_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Desenho App',
-      home: SlideShowPage(),
+      home: SlideshowPage(),
     );
   }
 }
