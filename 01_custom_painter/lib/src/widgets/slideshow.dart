@@ -4,17 +4,30 @@ import 'package:provider/provider.dart';
 
 class Slideshow extends StatelessWidget {
   final List<Widget> slides;
-  Slideshow({@required this.slides});
+  final bool pointsAbove;
+  final Color primaryColor;
+  final Color secudaryColor;
+  Slideshow({
+    @required this.slides,
+    this.pointsAbove = false,
+    this.primaryColor = Colors.blue,
+    this.secudaryColor = Colors.grey,
+  });
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => new SliderModel(),
-      child: Center(
-        child: Column(
-          children: [
-            Expanded(child: _Slides(this.slides)),
-            _Dots(),
-          ],
+      child: SafeArea(
+        child: Center(
+          child: Column(
+            children: [
+              if (this.pointsAbove)
+                _Dots(this.slides.length, primaryColor, secudaryColor),
+              Expanded(child: _Slides(this.slides)),
+              if (!this.pointsAbove)
+                _Dots(this.slides.length, primaryColor, secudaryColor),
+            ],
+          ),
         ),
       ),
     );
@@ -22,8 +35,10 @@ class Slideshow extends StatelessWidget {
 }
 
 class _Dots extends StatelessWidget {
-  const _Dots({Key key}) : super(key: key);
-
+  final int totalSlides;
+  final Color primaryColor;
+  final Color secudaryColor;
+  _Dots(this.totalSlides, this.primaryColor, this.secudaryColor);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,31 +46,30 @@ class _Dots extends StatelessWidget {
       height: 70,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _Dot(0),
-          _Dot(1),
-          _Dot(2),
-        ],
+        children: List.generate(this.totalSlides,
+            (index) => _Dot(index, primaryColor, secudaryColor)),
       ),
     );
   }
 }
 
 class _Dot extends StatelessWidget {
-  _Dot(this.index);
+  _Dot(this.index, this.primaryColor, this.secudaryColor);
   final int index;
+  final Color primaryColor;
+  final Color secudaryColor;
   @override
   Widget build(BuildContext context) {
     final pageViewIndex = context.watch<SliderModel>().currentPage;
+    final condition =
+        (pageViewIndex >= index - 0.5 && pageViewIndex < index + 0.5);
     return AnimatedContainer(
       duration: Duration(milliseconds: 200),
-      width: 14,
+      width: condition ? 20 : 14,
       margin: EdgeInsets.symmetric(horizontal: 5),
-      height: 14,
+      height: condition ? 20 : 14,
       decoration: BoxDecoration(
-        color: (pageViewIndex >= index - 0.5 && pageViewIndex < index + 0.5)
-            ? Colors.blue
-            : Colors.grey,
+        color: condition ? primaryColor : secudaryColor,
         shape: BoxShape.circle,
       ),
     );
@@ -96,13 +110,7 @@ class _SlidesState extends State<_Slides> {
       child: PageView(
           controller: pageViewController,
           physics: BouncingScrollPhysics(),
-          children: widget.slides.map((slide) => _Slide(slide)).toList()
-          //, children: [
-          //   _Slide("assets/slide-1.svg"),
-          //   _Slide("assets/slide-2.svg"),
-          //   _Slide("assets/slide-3.svg"),
-          // ],
-          ),
+          children: widget.slides.map((slide) => _Slide(slide)).toList()),
     );
   }
 }
