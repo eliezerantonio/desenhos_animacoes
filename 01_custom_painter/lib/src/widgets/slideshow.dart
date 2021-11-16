@@ -191,13 +191,11 @@ class _SlidershowModel with ChangeNotifier {
 
   set primaryColor(Color color) {
     this._primaryColor = color;
-    notifyListeners();
   }
 
   Color get secundaryColor => this._secundaryColor;
   set secundaryColor(Color color) {
     this._secundaryColor = color;
-    notifyListeners();
   }
 
   //get set pontos
@@ -206,7 +204,6 @@ class _SlidershowModel with ChangeNotifier {
 
   set primaryBullet(double size) {
     this._primaryBullet = size;
-    notifyListeners();
   }
 
   double get secundaryBullet => this._secundaryBullet;
@@ -214,6 +211,5 @@ class _SlidershowModel with ChangeNotifier {
   set secundaryBullet(double size) {
     this._secundaryBullet = size;
 
-    notifyListeners();
   }
 }
