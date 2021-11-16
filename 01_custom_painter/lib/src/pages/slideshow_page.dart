@@ -9,6 +9,8 @@ class SlideshowPage extends StatelessWidget {
       backgroundColor: Colors.blueGrey,
       body: Slideshow(
         pointsAbove: false,
+        primaryBullet: 60,
+        secundaryBullet: 12,
         primaryColor: Colors.white,
         secundaryColor: Colors.grey,
         slides: [
