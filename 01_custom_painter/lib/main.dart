@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'src/labs/slide_show_page.dart';
+import 'src/pages/emergency_page.dart';
 import 'src/pages/pinterest_page.dart';
 import 'src/pages/slideshow_page.dart';
 
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Desenho App',
-      home: PinterestPage(),
+      home: EmergencyPage(),
     );
   }
 }
