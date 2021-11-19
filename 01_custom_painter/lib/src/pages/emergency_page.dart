@@ -8,7 +8,14 @@ class EmergencyPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: FatButton(),
+        child: Builder(builder: (context) {
+          return FatButton(
+            onPressd: () {},
+            title: 'Motor acident',
+            color1: Color(0xff6989f5),
+            color2: Color(0xff906ef5),
+          );
+        }),
       ),
     );
   }
