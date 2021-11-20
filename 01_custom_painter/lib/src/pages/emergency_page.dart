@@ -56,15 +56,42 @@ class EmergencyPage extends StatelessWidget {
               ],
             ),
           ),
-          IconHeader(
-            icon: FontAwesomeIcons.plus,
-            title: "Assitencia medica",
-            subtitle: "Solicite",
-            color1: Color(0xff536CF6),
-            color2: Color(0xff66A9F2),
-          )
+          _Head()
         ],
       ),
+    );
+  }
+}
+
+class _Head extends StatelessWidget {
+  const _Head({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        IconHeader(
+          icon: FontAwesomeIcons.plus,
+          title: "Assitencia medica",
+          subtitle: "Solicite",
+          color1: Color(0xff536CF6),
+          color2: Color(0xff66A9F2),
+        ),
+        Positioned(
+          right: 0,
+          top: 40,
+          child: RawMaterialButton(
+            onPressed: () {},
+            shape: CircleBorder(),
+            child: FaIcon(
+              FontAwesomeIcons.ellipsisV,
+              color: Colors.white,
+            ),
+          ),
+        )
+      ],
     );
   }
 }

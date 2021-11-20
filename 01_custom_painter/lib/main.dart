@@ -4,6 +4,7 @@ import 'src/labs/slide_show_page.dart';
 import 'src/pages/emergency_page.dart';
 import 'src/pages/pinterest_page.dart';
 import 'src/pages/slideshow_page.dart';
+import 'src/pages/sliver_list_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Desenho App',
-      home: EmergencyPage(),
+      home: SliverPage(),
     );
   }
 }
